@@ -12,4 +12,4 @@ if ! [[ -h $HOME/.eb-bootstrap.sh ]]; then
     rm -f $HOME/.eb-bootstrap.sh
     ln -s .eb-dotfiles/bootstrap.sh $HOME/.eb-bootstrap.sh
 fi
-exec /bin/bash --rcfile $HOME/.eb-dotfiles/bashrc --login -i
+exec /bin/bash --rcfile $HOME/.eb-dotfiles/bashrc -i

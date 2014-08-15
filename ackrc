@@ -1,0 +1,4 @@
+--type-add=haskell=.hamlet,.cassius,.lucius,.julius,.cabal
+--type-set=conf=.conf
+--ignore-dir=.hsenvs
+--ignore-dir=.hsenv

@@ -1,2 +1,2 @@
 echo hello!
-exec /bin/bash
+exec /bin/bash -i

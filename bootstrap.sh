@@ -8,4 +8,4 @@ else
     mkdir $HOME/.eb-dotfiles
     curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C $HOME/.eb-dotfiles
 fi
-exec /bin/bash -i --rcfile $HOME/.eb-dotfiles/bashrc
+exec /bin/bash --rcfile $HOME/.eb-dotfiles/bashrc -i

@@ -2,6 +2,7 @@
 
 set nocompatible
 set ruler
+set number
 set autoindent
 set backspace=indent,eol,start
 set hidden

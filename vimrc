@@ -9,7 +9,7 @@ set autowrite
 set noignorecase
 set nosmartcase
 set virtualedit=
-set grepprg=ack-grep
+"set grepprg=ack-grep
 set showcmd
 set nostartofline
 set notimeout ttimeout ttimeoutlen=200

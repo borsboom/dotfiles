@@ -1,7 +1,8 @@
 if [[ -x $(which git) ]]; then
-    git clone https://github.com/borsboom/dotfiles.git ~/.eb-dotfiles
+    [[ -d $HOME/.eb-dotfiles ]] || git clone https://github.com/borsboom/dotfiles.git $HOME/.eb-dotfiles
+    (cd $HOME/.eb-dotfiles; git pull)
 else
-    mkdir ~/.eb-dotfiles
-    curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C ~/.eb-dotfiles
+    mkdir $HOME/.eb-dotfiles
+    curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C $HOME/.eb-dotfiles
 fi
 exec /bin/bash -i

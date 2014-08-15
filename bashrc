@@ -1,11 +1,11 @@
 #XXX might be a bit confusing that this file is name bashrc since it's really only used once at login
 
-[[ -x /etc/profile ]] && source /etc/profile
-if [[ -x ~/.bash_profile ]]; then
+[[ -e /etc/profile ]] && source /etc/profile
+if [[ -e ~/.bash_profile ]]; then
     source ~/.bash_profile
-elif [[ -x ~/.bash_login ]]; then
+elif [[ -e ~/.bash_login ]]; then
     source ~/.bash_login
-elif [[ -x ~/.profile ]]; then
+elif [[ -e ~/.profile ]]; then
     source ~/.profile
 fi
 

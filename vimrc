@@ -21,12 +21,18 @@ set nowritebackup
 set wildmenu
 set hlsearch
 set directory=~/.eb-vimswap//
-filetype plugin on
-syntax on
+set sw=4 ts=4 et
+
+if has('syntax')
+    filetype plugin on
+    syntax on
+endif
 
 " disable bell
-set noerrorbells visualbell t_vb=
-autocmd GUIEnter * set visualbell t_vb=
+if has('gui')
+    set noerrorbells visualbell t_vb=
+    autocmd GUIEnter * set visualbell t_vb=
+endif
 
 " gp selects last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'

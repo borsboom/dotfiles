@@ -1,0 +1,28 @@
+#!/bin/bash -e
+ssh "$@" /bin/bash <<'EOF'
+if [[ -h ~/.bashrc && $(readlink ~/.bashrc) == *skel* ]]; then
+    x=$(readlink ~/.bashrc)
+    rm -f ~/.bashrc
+    cp "$x" ~/.bashrc
+fi
+grep EXTRA_BASHRC ~/.bashrc >/dev/null || \
+    grep eb-dotfiles/bashrc ~/.bashrc >/dev/null || \
+    echo '[[ -n $EXTRA_BASHRC ]] && source ~/$EXTRA_BASHRC' >>~/.bashrc
+if [[ -x $(which git) ]]; then
+    if [[ -d ~/.eb-dotfiles/.git ]]; then
+        (cd ~/.eb-dotfiles; git pull -q --recurse-submodules=on-demand)
+    else
+        git clone --recurse-submodules https://github.com/borsboom/dotfiles.git ~/.eb-dotfiles
+        (
+            cd .eb-dotfiles
+            git config user.name "Emanuel Borsboom"
+            git config user.email emanuel@borsboom.io
+        )
+    fi
+else
+    mkdir ~/.eb-dotfiles
+    curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C ~/.eb-dotfiles
+fi
+EOF
+
+ssh -At "$@" EXTRA_BASHRC=.eb-dotfiles/bashrc bash --login

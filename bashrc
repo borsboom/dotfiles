@@ -2,7 +2,7 @@ set -o vi
 
 update_window_title ()
 {
-    printf '\e]2;%s\a' "${EB_WINDOW_TITLE:=$(hostname -s)}"
+    printf '\e]1;%s\a' "${EB_WINDOW_TITLE:=$(hostname -s)}"
 }
 
 export PS1='\[\033[1;36m\]${debian_chroot:+($debian_chroot)}\u@\h:\[\033[1;33m\]$(__git_ps1 "(%s)" 2>/dev/null)\[\033[1;37m\]\w\$\[\033[0m\] '

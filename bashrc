@@ -1,8 +1,14 @@
 set -o vi
 
+update_window_title ()
+{
+    printf '\e]0;%s\a' "$EB_WINDOW_TITLE"
+}
+
+
 export PS1='\[\033[1;36m\]${debian_chroot:+($debian_chroot)}\u@\h:\[\033[1;33m\]$(__git_ps1 "(%s)" 2>/dev/null)\[\033[1;37m\]\w\$\[\033[0m\] '
 unset PROMPT_COMMAND
-[[ -n $EB_WINDOW_TITLE ]] && PROMPT_COMMAND='echo "\e]0;$EB_WINDOW_TITLE\a"'
+[[ -n $EB_WINDOW_TITLE ]] && PROMPT_COMMAND=update_window_title
 
 export ACKRC=~/.eb-dotfiles/ackrc
 export SCREENRC=~/.eb-dotfiles/screenrc

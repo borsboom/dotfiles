@@ -2,7 +2,7 @@ set -o vi
 
 export PS1='\[\033[1;36m\]${debian_chroot:+($debian_chroot)}\u@\h:\[\033[1;33m\]$(__git_ps1 "(%s)" 2>/dev/null)\[\033[1;37m\]\w\$\[\033[0m\] '
 unset PROMPT_COMMAND
-[[ -n $EB_WINDOW_TITLE ]] && PS1="\e]1;$EB_WINDOW_TITLE\a$PS1"
+[[ -n $EB_WINDOW_TITLE ]] && PS1="\e]0;$EB_WINDOW_TITLE\a$PS1"
 
 export ACKRC=~/.eb-dotfiles/ackrc
 export SCREENRC=~/.eb-dotfiles/screenrc

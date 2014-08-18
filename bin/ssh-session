@@ -35,4 +35,4 @@ EOF
 for last; do true; done
 echo $last
 
-ssh -At "$@" EXTRA_BASHRC='$HOME/.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$last" bash --login
+ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$last" bash --login

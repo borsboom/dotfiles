@@ -33,5 +33,6 @@ EOF
 
 # Get last argument (the hostname) for window title
 for last; do true; done
+title=$(echo $last|sed 's/^.*@//')
 
-ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$last" bash --login
+ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$title" bash --login

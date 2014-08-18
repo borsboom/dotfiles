@@ -14,8 +14,8 @@ if [[ -x $(which git) ]]; then
         (
             cd ~/.eb-dotfiles;
             git pull -q --recurse-submodules=on-demand
-            git submodule sync
-            git submodule update --init --recursive
+            git submodule -q sync
+            git submodule -q update --init --recursive
         )
     else
         git clone --recurse-submodules https://github.com/borsboom/dotfiles.git ~/.eb-dotfiles

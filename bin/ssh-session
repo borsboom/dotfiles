@@ -1,4 +1,5 @@
 #!/bin/bash -e
+
 ssh "$@" /bin/bash <<'EOF'
 if [[ -h ~/.bashrc && $(readlink ~/.bashrc) == *skel* ]]; then
     x=$(readlink ~/.bashrc)
@@ -10,7 +11,12 @@ grep EXTRA_BASHRC ~/.bashrc >/dev/null || \
     echo '[[ -n $EXTRA_BASHRC ]] && source ~/$EXTRA_BASHRC' >>~/.bashrc
 if [[ -x $(which git) ]]; then
     if [[ -d ~/.eb-dotfiles/.git ]]; then
-        (cd ~/.eb-dotfiles; git pull -q --recurse-submodules=on-demand)
+        (
+            cd ~/.eb-dotfiles;
+            git pull -q --recurse-submodules=on-demand
+            git submodule sync
+            git submodule update --init --recursive
+        )
     else
         git clone --recurse-submodules https://github.com/borsboom/dotfiles.git ~/.eb-dotfiles
         (
@@ -25,4 +31,8 @@ else
 fi
 EOF
 
-ssh -At "$@" EXTRA_BASHRC=.eb-dotfiles/bashrc bash --login
+# Get last argument (the hostname) for window title
+for last; do true; done
+echo $last
+
+ssh -At "$@" EXTRA_BASHRC='$HOME/.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$last" bash --login

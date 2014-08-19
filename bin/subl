@@ -1,0 +1,6 @@
+#!/bin/bash -e
+if [[ -n $EB_ORIG_SUBL_PATH ]]; then
+	"$EB_ORIG_SUBL_PATH" "$@"
+else
+	$(dirname $0)/../vendor/rmate/rmate "$@"
+fi

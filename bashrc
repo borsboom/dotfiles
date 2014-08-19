@@ -13,7 +13,6 @@ wt () {
     export EB_WINDOW_TITLE="$1"
 }
 
-
 export ACKRC=~/.eb-dotfiles/ackrc
 export SCREENRC=~/.eb-dotfiles/screenrc
 
@@ -37,8 +36,14 @@ export VIMINIT="source ~/.eb-dotfiles/vimrc"
 if [[ -d "$HOME/.eb-dotfiles/bin" && ! "$PATH" == *"$HOME/.eb-dotfiles/bin"* ]]; then
     export EB_ORIG_GIT_PATH=$(which git)
     export EB_ORIG_SSH_PATH=$(which ssh)
+    export EB_ORIG_SUBL_PATH=$(which subl)
     export PATH="$HOME/.eb-dotfiles/bin:$PATH"
 fi
+
+### Set editor
+
+export EDITOR="subl -w"
+export VISUAL="subl -w"
 
 ### Git
 

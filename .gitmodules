@@ -31,3 +31,6 @@
 [submodule "vim/bundle/vim-signify"]
 	path = vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule "vendor/rmate"]
+	path = vendor/rmate
+	url = https://github.com/aurora/rmate.git

@@ -53,7 +53,7 @@ fi
 
 DO_START=y
 while [[ $DO_START == [yY]* ]]; do
-    ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$REMOTEHOST" '/bin/bash -lc "screen -dr || exec /bin/bash"' || true
+    ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$REMOTEHOST" '/bin/bash -l ~/.eb-dotfiles/bash-session' || true
     echo
     echo -n "Reconnect session? [y/N] "
     read DO_START

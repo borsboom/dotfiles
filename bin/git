@@ -1,9 +1,8 @@
 #!/bin/bash -e
-exec git \
+exec "$EB_ORIG_GIT_PATH" \
     -c user.name="Emanuel Borsboom" \
     -c color.ui=always \
     -c merge.conflictstyle=diff3 \
     -c rerere.enabled=true \
     -c credential.helper="cache --timeout=14400" \
     "$@"
-

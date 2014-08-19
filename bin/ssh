@@ -1,2 +1,2 @@
 #!/bin/bash -e
-exec /usr/bin/ssh -F ~/.eb-dotfiles/ssh/config "$@"
+exec "$EB_ORIG_SSH_PATH" -F ~/.eb-dotfiles/ssh/config "$@"

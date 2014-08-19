@@ -9,6 +9,7 @@ prompt_command () {
 }
 #PROMPT_COMMAND=prompt_command
 prompt_command # run it once incase we never show the prompt (i.e. reattach a screen)
+echo -n XXX hit enter; read xxx
 
 # Set the window title
 wt () {
@@ -33,11 +34,14 @@ export VIMINIT="source ~/.eb-dotfiles/vimrc"
 [[ -d "$HOME/.cabal/bin" && ! "$PATH" == *"$HOME/.cabal/bin"* ]] && \
     export PATH="$HOME/.cabal/bin:$PATH"
 
-[[ -d "$HOME/.eb-dotfiles/bin" && ! "$PATH" == *"$HOME/.eb-dotfiles/bin"* ]] && \
-    export PATH="$HOME/.eb-dotfiles/bin:$PATH"
-
 [[ -d "$HOME/bin" && ! "$PATH" == *"$HOME/bin"* ]] && \
     export PATH="$HOME/bin:$PATH"
+
+if [[ -d "$HOME/.eb-dotfiles/bin" && ! "$PATH" == *"$HOME/.eb-dotfiles/bin"* ]]; then
+    export EB_ORIG_GIT_PATH=$(which git)
+    export EB_ORIG_SSH_PATH=$(which ssh)
+    export PATH="$HOME/.eb-dotfiles/bin:$PATH"
+fi
 
 ### Git
 

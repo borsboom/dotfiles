@@ -52,7 +52,7 @@ else
     set t_Co=256
     let g:solarized_termcolors=256 "degraded 256 colors
 endif
-"colorscheme hybrid
+colorscheme hybrid
 "colorscheme desert256
 "colorscheme fu
 "colorscheme solarized

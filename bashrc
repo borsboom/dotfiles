@@ -5,7 +5,7 @@ unset PROMPT_COMMAND
 prompt_command () {
     printf '\e]0;%s\a' "${EB_WINDOW_TITLE:=$(hostname -s)}"
 }
-PROMPT_COMMAND=prompt_command
+#PROMPT_COMMAND=prompt_command
 prompt_command # run it once incase we never show the prompt (i.e. reattach a screen)
 
 # Set the window title

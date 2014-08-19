@@ -3,13 +3,10 @@ set -o vi
 export PS1='\[\033[1;36m\]${debian_chroot:+($debian_chroot)}\u@\h:\[\033[1;33m\]$(__git_ps1 "(%s)" 2>/dev/null)\[\033[1;37m\]\w\$\[\033[0m\] '
 unset PROMPT_COMMAND
 prompt_command () {
-    echo XXXA
     printf '\e]0;%s\a' "${EB_WINDOW_TITLE:=$(hostname -s)}"
-    echo XXXB
 }
-#PROMPT_COMMAND=prompt_command
+PROMPT_COMMAND=prompt_command
 prompt_command # run it once incase we never show the prompt (i.e. reattach a screen)
-echo -n XXX hit enter; read xxx
 
 # Set the window title
 wt () {

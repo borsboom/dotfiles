@@ -13,7 +13,7 @@ set nosmartcase
 set virtualedit=
 "set grepprg=ack-grep
 set nostartofline
-set pastetoggle=<F11>
+set pastetoggle=<F10>
 set nobackup
 set nowritebackup
 set hlsearch
@@ -45,18 +45,18 @@ if has('gui')
     autocmd GUIEnter * set visualbell t_vb=
 endif
 
+set background=dark
 if has("gui_running")
-    set background=light
     set guifont=Monaco:h13,Andale\ Mono\ Regular:h13,Menlo\ Regular:h13,Consolas\ Regular:h13,Courier\ New\ Regular:h13
 else
-    set background=dark
     set t_Co=256
     let g:solarized_termcolors=256 "degraded 256 colors
-    colorscheme hybrid
-    "colorscheme desert256
-    "colorscheme fu
-    "hi ColorColumn ctermbg=darkgrey
 endif
+"colorscheme hybrid
+"colorscheme desert256
+"colorscheme fu
+"colorscheme solarized
+"hi ColorColumn ctermbg=darkgrey
 
 " gp selects last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'

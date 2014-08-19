@@ -32,13 +32,29 @@ fi
 EOF
 
 # Get last argument (the hostname) for window title
-for last; do true; done
-title=$(echo $last|sed 's/^.*@//')
+for LAST; do true; done
+REMOTEHOST=$(echo $LAST|sed 's/^.*@//')
+
+function cleanup_mount() {
+    umount  ~/mnt/$REMOTEHOST || true
+    rmdir ~/mnt/$REMOTEHOST || true
+}
+if [[ -d ~/mnt/$REMOTEHOST ]]; then
+    echo
+    echo -n "~/mnt/$REMOTEHOST already exists.  Re-mount? [y/N] "
+    read REMOUNT
+    [[ $REMOUNT == [yY]* ]] && cleanup_mount
+fi
+if ! [[ -d ~/mnt/$REMOTEHOST ]]; then
+    mkdir -p ~/mnt/$REMOTEHOST
+    sshfs $LAST: ~/mnt/$REMOTEHOST -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST
+    trap cleanup_mount 0
+fi
 
 DO_START=y
-while [[ $DO_START == y* ]]; do
-    set +e
-    ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$title" '/bin/bash -lc "screen -dr || exec /bin/bash"'
-    echo -n "RESTART SESSION? [y/N] "
+while [[ $DO_START == [yY]* ]]; do
+    ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$REMOTEHOST" '/bin/bash -lc "screen -dr || exec /bin/bash"' || true
+    echo
+    echo -n "Reconnect session? [y/N] "
     read DO_START
 done

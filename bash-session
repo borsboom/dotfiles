@@ -1,1 +1,2 @@
+source ~/.bashrc
 screen -dr || exec /bin/bash

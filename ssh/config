@@ -6,5 +6,5 @@ HostName 192.168.42.10
 Host dev01
 HostName dev01.fpcomplete.com
 
-Host amgencss-repo
+Host amgen-git
 HostName ec2-54-213-172-106.us-west-2.compute.amazonaws.com

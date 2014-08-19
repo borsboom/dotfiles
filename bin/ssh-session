@@ -35,4 +35,10 @@ EOF
 for last; do true; done
 title=$(echo $last|sed 's/^.*@//')
 
-ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$title" bash --login
+DO_START=y
+while [[ $DO_START == y* ]]; do
+    set +e
+    ssh -At "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$title" '/bin/bash -lc "screen -dr || exec /bin/bash"'
+    echo -n "RESTART SESSION? [y/N] "
+    read DO_START
+done

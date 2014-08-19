@@ -3,7 +3,7 @@ startup_message off
 defscrollback 30000
 altscreen on
 hardstatus alwayslastline
-hardstatus string '%{= Kw} %-w%{= KW}%n %t%{= Kw}%+w'
+hardstatus string '%{= Kw} %h | %-w%{= KW}%n %t%{= Kw}%+w'
 
 # terminfo and termcap for nice 256 color terminal
 attrcolor b ".I"

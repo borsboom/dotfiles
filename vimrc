@@ -3,13 +3,12 @@ set runtimepath^=~/.eb-dotfiles/vim
 if has('autocmd')
 	execute pathogen#infect()
 	execute pathogen#infect('~/.eb-dotfiles/vim/bundle/{}')
-else
-	" if using a basic vim version, just load vim-sensible
-	set runtimepath^=~/.eb-dotfiles/vim/bundle/vim-sensible
 endif
 
-"many of these options are from http://vim.wikia.com/wiki/Example_vimrc
+" if using a basic vim version, this ensures vim-sensible is run
+source ~/.eb-dotfiles/vim/bundle/vim-sensible/plugin/sensible.vim
 
+"many of these options are from http://vim.wikia.com/wiki/Example_vimrc
 set nocompatible
 set number
 set hidden
@@ -17,13 +16,14 @@ set autowrite
 set noignorecase
 set nosmartcase
 set virtualedit=
-"set grepprg=ack-grep
 set nostartofline
 set pastetoggle=<F10>
 set nobackup
 set nowritebackup
 set hlsearch
 set directory=~/.eb-vimswap//
+
+"set grepprg=ack-grep
 set sw=4 ts=4 sts=0 et
 
 " Filetype-specific settings
@@ -32,19 +32,6 @@ if has('autocmd')
 	autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 	autocmd FileType haskell setlocal cc=100 sw=4 ts=4 sts=0 et
 endif
-
-"" These are set by vim-sensible
-"set ruler 
-"set wildmenu
-"set laststatus=2
-"set notimeout ttimeout ttimeoutlen=200
-"set showcmd
-"set backspace=indent,eol,start
-"set autoindent
-"if has('syntax')
-"    filetype plugin on
-"    syntax on
-"endif
 
 " disable bell
 if has('gui')

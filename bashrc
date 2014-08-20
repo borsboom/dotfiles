@@ -34,10 +34,10 @@ export VIMINIT="source ~/.eb-dotfiles/vimrc"
     export PATH="$HOME/bin:$PATH"
 
 if [[ -d "$HOME/.eb-dotfiles/bin" && ! "$PATH" == *"$HOME/.eb-dotfiles/bin"* ]]; then
-    export EB_ORIG_GIT_PATH=$(which git)
-    export EB_ORIG_SSH_PATH=$(which ssh)
-    export EB_ORIG_SUBL_PATH=$(which subl)
-    export EB_ORIG_SCREEN_PATH=$(which screen)
+    export EB_ORIG_GIT_PATH=$(which git 2>/dev/null)
+    export EB_ORIG_SSH_PATH=$(which ssh 2>/dev/null)
+    export EB_ORIG_SUBL_PATH=$(which subl 2>/dev/null)
+    export EB_ORIG_SCREEN_PATH=$(which screen 2>/dev/null)
     export PATH="$HOME/.eb-dotfiles/bin:$PATH"
 fi
 

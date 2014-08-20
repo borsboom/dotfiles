@@ -4,7 +4,6 @@
 for LAST; do true; done
 REMOTEHOST=$(echo $LAST|sed 's/^.*@//')
 
-
 USE_RSYNC=
 while read -r line; do
     printf "%s\n" "$line"
@@ -62,13 +61,13 @@ if ! [[ -d ~/mnt/$REMOTEHOST ]]; then
 fi
 
 DO_START=y
-while [[ $DO_START == [yY]* ]]; do
+while [[ $DO_START != [nN]* ]]; do
     ssh -t -R 52698:localhost:52698 "$@" \
             EXTRA_BASHRC='.eb-dotfiles/bashrc' \
             EB_WINDOW_TITLE="$REMOTEHOST" \
             '/bin/bash -li ~/.eb-dotfiles/bash-session' \
         || true
     echo
-    echo -n "Reconnect session? [y/N] "
+    echo -n "Reconnect session? [Y/n] "
     read DO_START
 done

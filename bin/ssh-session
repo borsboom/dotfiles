@@ -1,12 +1,19 @@
 #!/bin/bash -ex
 
+SSHARGSEXTRA=
+if [[ $1 == "--no-knownhosts" ]]; then
+    SSHARGSEXTRA="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+    shift
+fi
+
 LAST=${@:${#@}:1} # last argument
-SSHARGS=${@:1:$((${#@}-1))} # all args except the last
+SSHARGS="${@:1:$((${#@}-1))}" # all args except the last
 [[ -n $SSHARGS ]] && SSHARGS=" $SSHARGS"
+[[ -n $SSHARGSEXTRA ]] && SSHARGS="$SSHARGS $SSHARGSEXTRA"
 REMOTEHOST=$(echo $LAST|sed 's/[^@]*@//')
 REMOTEUSER=
 (echo $LAST|grep @) && REMOTEUSER=$(echo $LAST|sed 's/@.*//')
-[[ -n $REMOTEUSER ]] && SSHARGS=" -l $REMOTEUSER"
+[[ -n $REMOTEUSER ]] && SSHARGS="$SSHARGS -l $REMOTEUSER"
 
 USE_RSYNC=
 SSH_OK=

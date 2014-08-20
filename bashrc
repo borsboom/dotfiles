@@ -37,6 +37,7 @@ if [[ -d "$HOME/.eb-dotfiles/bin" && ! "$PATH" == *"$HOME/.eb-dotfiles/bin"* ]];
     export EB_ORIG_GIT_PATH=$(which git)
     export EB_ORIG_SSH_PATH=$(which ssh)
     export EB_ORIG_SUBL_PATH=$(which subl)
+    export EB_ORIG_SCREEN_PATH=$(which screen)
     export PATH="$HOME/.eb-dotfiles/bin:$PATH"
 fi
 

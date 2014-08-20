@@ -1,14 +1,24 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-# Get last argument (the user@hostname)
-for LAST; do true; done
-REMOTEHOST=$(echo $LAST|sed 's/^.*@//')
+LAST=${@:${#@}:1} # last argument
+SSHARGS=${@:1:$((${#@}-1))} # all args except the last
+[[ -n $SSHARGS ]] && SSHARGS=" $SSHARGS"
+REMOTEHOST=$(echo $LAST|sed 's/[^@]*@//')
+REMOTEUSER=
+(echo $LAST|grep @) && REMOTEUSER=$(echo $LAST|sed 's/@.*//')
+[[ -n $REMOTEUSER ]] && SSHARGS=" -l $REMOTEUSER"
 
 USE_RSYNC=
+SSH_OK=
 while read -r line; do
-    printf "%s\n" "$line"
-    [[ $line == __EB_USE_RSYNC__ ]] && USE_RSYNC=1
-done < <(ssh $LAST /bin/bash <<'EOF'
+    if [[ $line == __EB_USE_RSYNC__ ]]; then
+        USE_RSYNC=1
+    elif [[ $line == __EB_OK__ ]]; then
+        SSH_OK=1
+    else
+        printf "%s\n" "$line"
+    fi
+done < <(ssh$SSHARGS $REMOTEHOST /bin/bash <<'EOF'
 if [[ -h ~/.bashrc && $(readlink ~/.bashrc) == *skel* ]]; then
     x=$(readlink ~/.bashrc)
     rm -f ~/.bashrc
@@ -36,11 +46,14 @@ if [[ -x $(which git) && -x $(which perl) ]]; then
 else
     echo __EB_USE_RSYNC__
 fi
+echo __EB_OK__
 EOF
 )
 
+[[ -z $SSH_OK ]] && exit 1
+
 if [[ -n $USE_RSYNC ]]; then
-    rsync -av ~/.eb-dotfiles/ $LAST:.eb-dotfiles/
+    rsync -av -e "ssh$SSHARGS" ~/.eb-dotfiles/ $REMOTEUSER:.eb-dotfiles/
 fi
 
 function cleanup_mount() {
@@ -55,14 +68,14 @@ if [[ -d ~/mnt/$REMOTEHOST ]]; then
 fi
 if ! [[ -d ~/mnt/$REMOTEHOST ]]; then
     mkdir -p ~/mnt/$REMOTEHOST
-    sshfs $LAST: ~/mnt/$REMOTEHOST \
-        -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST
+    sshfs $REMOTEHOST: ~/mnt/$REMOTEHOST \
+        -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST,ssh_command="ssh$SSHARGS"
     trap cleanup_mount 0
 fi
 
 DO_START=y
 while [[ $DO_START != [nN]* ]]; do
-    ssh -t -R 52698:localhost:52698 "$@" \
+    ssh -t -R 52698:localhost:52698$SSHARGS $REMOTEHOST \
             EXTRA_BASHRC='.eb-dotfiles/bashrc' \
             EB_WINDOW_TITLE="$REMOTEHOST" \
             '/bin/bash -li ~/.eb-dotfiles/bash-session' \

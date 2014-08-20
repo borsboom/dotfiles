@@ -2,9 +2,15 @@
 
 Host fp-ubuntu
 HostName 192.168.42.10
+ForwardX11Trusted
 
 Host dev01
 HostName dev01.fpcomplete.com
+ForwardX11Trusted
 
 Host amgen-git
 HostName ec2-54-213-172-106.us-west-2.compute.amazonaws.com
+
+Host amgen-misc01
+User core
+HostName 54.84.167.33

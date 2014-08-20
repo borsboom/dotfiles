@@ -26,7 +26,7 @@ if [[ -x $(which git) ]]; then
         )
     fi
 else
-    mkdir ~/.eb-dotfiles
+    mkdir -p ~/.eb-dotfiles
     curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C ~/.eb-dotfiles
 fi
 EOF

@@ -1,4 +1,5 @@
-if [[ -n $SSH_AUTH_SOCK ]] ; then
+if [[ -n $SSH_AUTH_SOCK ]]; then
+	mkdir -p ~/.eb-dotfiles/tmp
     ln -sf "$SSH_AUTH_SOCK" ~/.eb-dotfiles/tmp/ssh_auth_sock
 fi
 screen -dr || exec /bin/bash

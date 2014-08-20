@@ -1,19 +1,29 @@
 #!/bin/bash -ex
 
-SSHARGSEXTRA=
-if [[ $1 == "--no-knownhosts" ]]; then
-    SSHARGSEXTRA="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSHARGS_KNOWNHOSTS=
+WINNAME=
+while [[ $1 == --nkh || $1 == -n ]]; do
+    case $1 in
+        --nkh)
+            SSHARGS_KNOWNHOSTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+            ;;
+        -n)
+            WINNAME=$2
+            shift
+            ;;
+    esac
     shift
-fi
+done
 
 LAST=${@:${#@}:1} # last argument
 SSHARGS="${@:1:$((${#@}-1))}" # all args except the last
 [[ -n $SSHARGS ]] && SSHARGS=" $SSHARGS"
-[[ -n $SSHARGSEXTRA ]] && SSHARGS="$SSHARGS $SSHARGSEXTRA"
+[[ -n $SSHARGS_KNOWNHOSTS ]] && SSHARGS="$SSHARGS $SSHARGS_KNOWNHOSTS"
 REMOTEHOST=$(echo $LAST|sed 's/[^@]*@//')
 REMOTEUSER=
 (echo $LAST|grep @) && REMOTEUSER=$(echo $LAST|sed 's/@.*//')
 [[ -n $REMOTEUSER ]] && SSHARGS="$SSHARGS -l $REMOTEUSER"
+[[ -z $WINNAME ]] && WINNAME=$REMOTEHOST
 
 USE_RSYNC=
 SSH_OK=
@@ -64,19 +74,19 @@ if [[ -n $USE_RSYNC ]]; then
 fi
 
 function cleanup_mount() {
-    umount  ~/mnt/$REMOTEHOST || true
-    rmdir ~/mnt/$REMOTEHOST || true
+    umount  ~/mnt/$WINNAME || true
+    rmdir ~/mnt/$WINNAME || true
 }
-if [[ -d ~/mnt/$REMOTEHOST ]]; then
+if [[ -d ~/mnt/$WINNAME ]]; then
     echo
-    echo -n "~/mnt/$REMOTEHOST already exists.  Re-mount? [y/N] "
+    echo -n "~/mnt/$WINNAME already exists.  Re-mount? [y/N] "
     read REMOUNT
     [[ $REMOUNT == [yY]* ]] && cleanup_mount
 fi
-if ! [[ -d ~/mnt/$REMOTEHOST ]]; then
-    mkdir -p ~/mnt/$REMOTEHOST
-    sshfs $REMOTEHOST: ~/mnt/$REMOTEHOST \
-        -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST,ssh_command="ssh$SSHARGS"
+if ! [[ -d ~/mnt/$WINNAME ]]; then
+    mkdir -p ~/mnt/$WINNAME
+    sshfs $REMOTEHOST: ~/mnt/$WINNAME \
+        -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$WINNAME,ssh_command="ssh$SSHARGS"
     trap cleanup_mount 0
 fi
 
@@ -84,7 +94,7 @@ DO_START=y
 while [[ $DO_START != [nN]* ]]; do
     ssh -t -R 52698:localhost:52698$SSHARGS $REMOTEHOST \
             EXTRA_BASHRC='.eb-dotfiles/bashrc' \
-            EB_WINDOW_TITLE="$REMOTEHOST" \
+            EB_WINDOW_TITLE="$WINNAME" \
             '/bin/bash -li ~/.eb-dotfiles/bash-session' \
         || true
     echo

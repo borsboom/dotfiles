@@ -1,6 +1,12 @@
 set runtimepath^=~/.eb-dotfiles/vim
-execute pathogen#infect()
-execute pathogen#infect('~/.eb-dotfiles/vim/bundle/{}')
+
+if has('autocmd')
+	execute pathogen#infect()
+	execute pathogen#infect('~/.eb-dotfiles/vim/bundle/{}')
+else
+	" if using a basic vim version, just load vim-sensible
+	set runtimepath^=~/.eb-dotfiles/vim/bundle/vim-sensible
+endif
 
 "many of these options are from http://vim.wikia.com/wiki/Example_vimrc
 
@@ -18,13 +24,14 @@ set nobackup
 set nowritebackup
 set hlsearch
 set directory=~/.eb-vimswap//
-
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Tab settings
-
 set sw=4 ts=4 sts=0 et
-au FileType haskell setlocal cc=100 sw=4 ts=4 sts=0 et
+
+" Filetype-specific settings
+
+if has('autocmd')
+	autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+	autocmd FileType haskell setlocal cc=100 sw=4 ts=4 sts=0 et
+endif
 
 "" These are set by vim-sensible
 "set ruler 
@@ -52,19 +59,25 @@ else
     set t_Co=256
     let g:solarized_termcolors=256 "degraded 256 colors
 endif
-colorscheme hybrid
-"colorscheme desert256
-"colorscheme fu
-"colorscheme solarized
-"hi ColorColumn ctermbg=darkgrey
+if has('autocmd')
+	colorscheme hybrid
+	"colorscheme desert256
+	"colorscheme fu
+	"colorscheme solarized
+	"hi ColorColumn ctermbg=darkgrey
+endif
 
 " gp selects last paste
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " ctrlp plugin
-let g:ctrlp_cmd = 'CtrlPBuffer'
+if has('autocmd')
+	let g:ctrlp_cmd = 'CtrlPBuffer'
+endif
 
 " vim2hs plugin
-let g:haskell_conceal_enumerations = 1
-let g:haskell_conceal = 1
-let g:haskell_conceal_wide = 1
+if has('autocmd')
+	let g:haskell_conceal_enumerations = 1
+	let g:haskell_conceal = 1
+	let g:haskell_conceal_wide = 1
+endif

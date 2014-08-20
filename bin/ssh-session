@@ -1,6 +1,15 @@
 #!/bin/bash -e
 
-ssh "$@" /bin/bash <<'EOF'
+# Get last argument (the user@hostname)
+for LAST; do true; done
+REMOTEHOST=$(echo $LAST|sed 's/^.*@//')
+
+
+USE_RSYNC=
+while read -r line; do
+    printf "%s\n" "$line"
+    [[ $line == __EB_USE_RSYNC__ ]] && USE_RSYNC=1
+done < <(ssh $LAST /bin/bash <<'EOF'
 if [[ -h ~/.bashrc && $(readlink ~/.bashrc) == *skel* ]]; then
     x=$(readlink ~/.bashrc)
     rm -f ~/.bashrc
@@ -9,7 +18,7 @@ fi
 grep EXTRA_BASHRC ~/.bashrc >/dev/null || \
     grep eb-dotfiles/bashrc ~/.bashrc >/dev/null || \
     echo '[[ -n $EXTRA_BASHRC ]] && source ~/$EXTRA_BASHRC' >>~/.bashrc
-if [[ -x $(which git) ]]; then
+if [[ -x $(which git) && -x $(which perl) ]]; then
     if [[ -d ~/.eb-dotfiles/.git ]]; then
         (
             cd ~/.eb-dotfiles;
@@ -26,14 +35,14 @@ if [[ -x $(which git) ]]; then
         )
     fi
 else
-    mkdir -p ~/.eb-dotfiles
-    curl -sSL https://github.com/borsboom/dotfiles/tarball/master|tar xzf - --strip-components=1 -C ~/.eb-dotfiles
+    echo __EB_USE_RSYNC__
 fi
 EOF
+)
 
-# Get last argument (the hostname) for window title
-for LAST; do true; done
-REMOTEHOST=$(echo $LAST|sed 's/^.*@//')
+if [[ -n $USE_RSYNC ]]; then
+    rsync -av ~/.eb-dotfiles/ $LAST:.eb-dotfiles/
+fi
 
 function cleanup_mount() {
     umount  ~/mnt/$REMOTEHOST || true
@@ -47,13 +56,18 @@ if [[ -d ~/mnt/$REMOTEHOST ]]; then
 fi
 if ! [[ -d ~/mnt/$REMOTEHOST ]]; then
     mkdir -p ~/mnt/$REMOTEHOST
-    sshfs $LAST: ~/mnt/$REMOTEHOST -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST
+    sshfs $LAST: ~/mnt/$REMOTEHOST \
+        -oauto_cache,reconnect,defer_permissions,noappledouble,negative_vncache,volname=sshfs-$REMOTEHOST
     trap cleanup_mount 0
 fi
 
 DO_START=y
 while [[ $DO_START == [yY]* ]]; do
-    ssh -t -R 52698:localhost:52698 "$@" EXTRA_BASHRC='.eb-dotfiles/bashrc' EB_WINDOW_TITLE="$REMOTEHOST" '/bin/bash -li ~/.eb-dotfiles/bash-session' || true
+    ssh -t -R 52698:localhost:52698 "$@" \
+            EXTRA_BASHRC='.eb-dotfiles/bashrc' \
+            EB_WINDOW_TITLE="$REMOTEHOST" \
+            '/bin/bash -li ~/.eb-dotfiles/bash-session' \
+        || true
     echo
     echo -n "Reconnect session? [y/N] "
     read DO_START

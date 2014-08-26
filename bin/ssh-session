@@ -70,7 +70,7 @@ EOF
 [[ -z $SSH_OK ]] && exit 1
 
 if [[ -n $USE_RSYNC ]]; then
-    rsync -av -e "ssh$SSHARGS" ~/.eb-dotfiles/ $REMOTEUSER:.eb-dotfiles/
+    rsync -av -e "ssh$SSHARGS" ~/.eb-dotfiles/ $REMOTEHOST:.eb-dotfiles/
 fi
 
 function cleanup_mount() {

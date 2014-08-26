@@ -1,16 +1,19 @@
 # FP Complete
 
 Host fp-ubuntu
+User manny
 HostName 192.168.42.10
 ForwardX11Trusted yes
 ForwardAgent yes
 
 Host dev01
+User manny
 HostName dev01.fpcomplete.com
 ForwardX11Trusted yes
 ForwardAgent yes
 
 Host amgen-git
+User manny
 HostName ec2-54-213-172-106.us-west-2.compute.amazonaws.com
 ForwardAgent yes
 

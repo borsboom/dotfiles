@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec ssh -t $1 -- ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $2

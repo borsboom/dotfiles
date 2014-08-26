@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $($(dirname $0)/git-toplevel)
+(git ls-tree -r --name-only HEAD; git-ls-modified)|sed s#^#`pwd`/#|uniq

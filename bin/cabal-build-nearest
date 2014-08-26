@@ -1,0 +1,2 @@
+#!/bin/bash
+cd $(dirname `upfind -name '*.cabal'|head -1`) && exec cabal build

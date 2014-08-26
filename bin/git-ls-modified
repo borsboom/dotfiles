@@ -1,0 +1,2 @@
+#!/bin/bash
+git status -s -uall|grep -v '^D'|sed 's/^RM .\+ -> /RM /'|awk '{print $2}'

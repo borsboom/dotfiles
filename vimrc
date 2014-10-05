@@ -44,10 +44,10 @@ if has("gui_running")
     set guifont=Monaco:h13,Andale\ Mono\ Regular:h13,Menlo\ Regular:h13,Consolas\ Regular:h13,Courier\ New\ Regular:h13
 else
     set t_Co=256
-    let g:solarized_termcolors=256 "degraded 256 colors
+    "let g:solarized_termcolors=256 "degraded 256 colors
 endif
 if has('autocmd')
-	colorscheme hybrid
+	"colorscheme hybrid
 	"colorscheme desert256
 	"colorscheme fu
 	"colorscheme solarized
@@ -63,8 +63,8 @@ if has('autocmd')
 endif
 
 " vim2hs plugin
-if has('autocmd')
-	let g:haskell_conceal_enumerations = 1
-	let g:haskell_conceal = 1
-	let g:haskell_conceal_wide = 1
-endif
+"if has('autocmd')
+"	let g:haskell_conceal_enumerations = 1
+"	let g:haskell_conceal = 1
+"	let g:haskell_conceal_wide = 1
+"endif

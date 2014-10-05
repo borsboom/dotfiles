@@ -1,23 +1,32 @@
 # FP Complete
 
 Host fp-ubuntu
-User manny
-HostName 192.168.42.10
-ForwardX11Trusted yes
-ForwardAgent yes
+	User manny
+	HostName 192.168.42.10
+	#HostName home.borsboom.io
+	ForwardX11Trusted yes
+	ForwardAgent yes
 
 Host dev01
-User manny
-HostName dev01.fpcomplete.com
-ForwardX11Trusted yes
-ForwardAgent yes
+	User manny
+	HostName dev01.fpcomplete.com
+	ForwardX11Trusted yes
+	ForwardAgent yes
 
-Host amgen-git
-User manny
-HostName ec2-54-213-172-106.us-west-2.compute.amazonaws.com
-ForwardAgent yes
+#Host amgen-git
+#	User manny
+#	HostName ec2-54-213-172-106.us-west-2.compute.amazonaws.com
 
 Host amgen-misc01
-User core
-HostName 54.84.167.33
-ForwardAgent yes
+	User core
+	HostName docker-registry.amgen.fpcomplete.com
+	ForwardAgent yes
+
+Host misc01
+	User ubuntu
+	HostName misc01.fpcomplete.com
+	ForwardX11Trusted yes
+	ForwardAgent yes
+
+Host amgencss.collab.net
+    User manny

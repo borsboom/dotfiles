@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 SSHARGS_KNOWNHOSTS=
 WINNAME=
@@ -63,6 +63,9 @@ if [[ -x $(which git) && -x $(which perl) ]]; then
 else
     echo __EB_USE_RSYNC__
 fi
+if ! (grep bashrc "$HOME/.profile" || grep bashrc "$HOME/.bash_profile") >/dev/null 2>/dev/null ; then
+    echo "WARNING: .profile/.bash_profile does not reference .bashrc."
+fi
 echo __EB_OK__
 EOF
 )
@@ -74,14 +77,14 @@ if [[ -n $USE_RSYNC ]]; then
 fi
 
 function cleanup_mount() {
-    umount  ~/mnt/$WINNAME || true
+    diskutil unmount ~/mnt/$WINNAME "$@" || true
     rmdir ~/mnt/$WINNAME || true
 }
 if [[ -d ~/mnt/$WINNAME ]]; then
     echo
     echo -n "~/mnt/$WINNAME already exists.  Re-mount? [y/N] "
     read REMOUNT
-    [[ $REMOUNT == [yY]* ]] && cleanup_mount
+    [[ $REMOUNT == [yY]* ]] && cleanup_mount force
 fi
 if ! [[ -d ~/mnt/$WINNAME ]]; then
     mkdir -p ~/mnt/$WINNAME

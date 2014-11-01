@@ -56,3 +56,7 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 ### Colourful 'ls' output on Mac OS
 
 export CLICOLOR=
+
+### Readline
+
+export INPUTRC="$HOME/.eb-dotfiles/inputrc"
